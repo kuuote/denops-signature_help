@@ -130,13 +130,15 @@ export class SigHandler {
         { line: line },
       );
     } else {
+      const pos = await denops.eval("screenpos('%', line('.'), strlen(getline('.')))");
+      fn.ensureScreenPos(pos);
       await denops.call(
         "signature_help#doc#show_floating",
         {
           lines: [line],
           floatOpt: {
-            row: await fn.screenrow(denops) as number,
-            col: (await fn.getline(denops, ".") as string).length + 5,
+            row: pos.row,
+            col: pos.col + 2,
             border: false,
             width: line.length,
             height: 1,
